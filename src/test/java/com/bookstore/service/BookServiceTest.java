@@ -111,4 +111,10 @@ class BookServiceTest {
         assertEquals("Libro1", result.get(0).getTitle());
         assertEquals("Libro2", result.get(1).getTitle());
     }
+    @Test
+    void saveBookStockMustBeNonNegative() {
+        Book invalidBook = new Book("Titulo", "Autor", 10.0, -1); // Stock negativo
+        assertThrows(BadRequestException.class, () -> bookService.saveBook(invalidBook));
+        verify(bookRepository, never()).save(any(Book.class));
+    }
 }
