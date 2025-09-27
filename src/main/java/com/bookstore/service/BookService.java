@@ -12,19 +12,29 @@ import java.util.List;
 public class BookService {
     private final BookRepository bookRepository;
 
-    public BookService(BookRepository bookRepository) { this.bookRepository = bookRepository; }
+    public BookService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
 
-    // regla: precio > 0 antes de guardar
     public Book saveBook(Book book) {
-        if (book.getPrice() <= 0) throw new BadRequestException("El precio debe ser mayor que 0");
+        validateBook(book);
         return bookRepository.save(book);
     }
 
-    public List<Book> getAllBooks() { return bookRepository.findAll(); }
+    private void validateBook(Book book) {
+        if (book.getPrice() <= 0) throw new BadRequestException("El precio debe ser mayor que 0");
+        if (book.getStock() < 0) throw new BadRequestException("El stock no puede ser negativo");
+    }
+
+    public List<Book> getAllBooks() {
+        return bookRepository.findAll();
+    }
 
     public Book getById(Long id) {
         return bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Libro no encontrado"));
     }
 
-    public void deleteById(Long id) { bookRepository.deleteById(id); }
+    public void deleteById(Long id) {
+        bookRepository.deleteById(id);
+    }
 }
