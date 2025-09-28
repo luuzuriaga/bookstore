@@ -37,4 +37,7 @@ public class ClienteService {
     }
 
     public void deleteById(Long id) { clienteRepository.deleteById(id); }
+
+    public long countClientes() {
+        return clienteRepository.count();
 }
