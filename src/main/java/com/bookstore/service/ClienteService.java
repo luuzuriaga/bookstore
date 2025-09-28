@@ -8,6 +8,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Servicio para la gestión de clientes.
+ * TODO: mejorar logs en el futuro
+ */
+
 @Service
 public class ClienteService {
     private final ClienteRepository clienteRepository;
