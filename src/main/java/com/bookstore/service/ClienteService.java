@@ -14,16 +14,7 @@ public class ClienteService {
 
     public ClienteService(ClienteRepository clienteRepository) { this.clienteRepository = clienteRepository; }
 
-    // regla: email único antes de guardar
-    public Cliente saveCliente(Cliente cliente) {
-        if (cliente.getEmail() == null || cliente.getEmail().trim().isEmpty()) {
-            throw new BadRequestException("El email es obligatorio");
-        }
-        if (clienteRepository.findByEmail(cliente.getEmail()).isPresent()) {
-            throw new BadRequestException(" Ya existe un cliente con ese email. ");
-        }
-        return clienteRepository.save(cliente);
-    }
+
 
     public List<Cliente> getAllClientes() { return clienteRepository.findAll(); }
 
