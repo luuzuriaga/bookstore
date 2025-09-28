@@ -29,16 +29,13 @@ class BookServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    // Test: precio <= 0 lanza BadRequestException
     @Test
     void saveBookPriceMustBePositive() {
         Book invalidBook = new Book("Titulo", "Autor", -5.0, 3);
-
         assertThrows(BadRequestException.class, () -> bookService.saveBook(invalidBook));
         verify(bookRepository, never()).save(any(Book.class));
     }
 
-    // Test: guardar libro correctamente
     @Test
     void saveBookSuccessfully() {
         Book book = new Book("Titulo", "Autor", 10.0, 5);
@@ -53,7 +50,6 @@ class BookServiceTest {
         assertEquals(5, saved.getStock());
     }
 
-    // Test extra: guardar libro con stock 0
     @Test
     void saveBookWithDifferentStock() {
         Book book = new Book("Otro titulo", "Otro autor", 20.0, 0);
@@ -65,7 +61,6 @@ class BookServiceTest {
         assertEquals(0, saved.getStock());
     }
 
-    // Test: obtener libro por ID encontrado
     @Test
     void getByIdFound() {
         Book book = new Book("Titulo", "Autor", 10.0, 5);
@@ -78,7 +73,6 @@ class BookServiceTest {
         assertEquals("Autor", found.getAuthor());
     }
 
-    // Test: obtener libro por ID no encontrado
     @Test
     void getByIdNotFound() {
         when(bookRepository.findById(1L)).thenReturn(Optional.empty());
@@ -86,7 +80,6 @@ class BookServiceTest {
         assertThrows(ResourceNotFoundException.class, () -> bookService.getById(1L));
     }
 
-    // Test: eliminar libro por ID
     @Test
     void deleteByIdTest() {
         doNothing().when(bookRepository).deleteById(1L);
@@ -96,7 +89,6 @@ class BookServiceTest {
         verify(bookRepository, times(1)).deleteById(1L);
     }
 
-    // Test extra: obtener todos los libros
     @Test
     void getAllBooksTest() {
         List<Book> books = List.of(
@@ -111,10 +103,31 @@ class BookServiceTest {
         assertEquals("Libro1", result.get(0).getTitle());
         assertEquals("Libro2", result.get(1).getTitle());
     }
+
     @Test
     void saveBookStockMustBeNonNegative() {
-        Book invalidBook = new Book("Titulo", "Autor", 10.0, -1); // Stock negativo
+        Book invalidBook = new Book("Titulo", "Autor", 10.0, -1);
         assertThrows(BadRequestException.class, () -> bookService.saveBook(invalidBook));
+        verify(bookRepository, never()).save(any(Book.class));
+    }
+
+    @Test
+    void saveBookTitleMustNotBeEmpty() {
+        Book invalidBook = new Book("", "Autor", 10.0, 5);
+        assertThrows(BadRequestException.class, () -> bookService.saveBook(invalidBook));
+        verify(bookRepository, never()).save(any(Book.class));
+    }
+
+    @Test
+    void saveBookAuthorMustNotBeEmpty() {
+        Book invalidBook = new Book("Titulo", "", 10.0, 5);
+        assertThrows(BadRequestException.class, () -> bookService.saveBook(invalidBook));
+        verify(bookRepository, never()).save(any(Book.class));
+    }
+
+    @Test
+    void saveBookMustNotBeNull() {
+        assertThrows(BadRequestException.class, () -> bookService.saveBook(null));
         verify(bookRepository, never()).save(any(Book.class));
     }
 }
