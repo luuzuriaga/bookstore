@@ -47,7 +47,7 @@ class VentaServiceTest {
 
     @Test
     void cannotSellMoreThanStock() {
-        // Intentar vender más de lo que hay en stock → debe lanzar BadRequestException
+        // Intentar vender más de lo que hay en stock → debe lanzar BadRequestException-
         assertThrows(BadRequestException.class, () ->
                 ventaService.registrarVenta(cliente.getId(), book.getId(), 3));
     }

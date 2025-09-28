@@ -96,5 +96,5 @@ mvn clean install
 3.	Ejecutar la aplicación:
 mvn spring-boot:run
 
-4.	Probar los endpoints usando Postman o similar.
+1`  4.	Probar los endpoints usando Postman o similar.
 
