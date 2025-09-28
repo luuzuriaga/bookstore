@@ -22,8 +22,21 @@ public class BookService {
     }
 
     private void validateBook(Book book) {
-        if (book.getPrice() <= 0) throw new BadRequestException("El precio debe ser mayor que 0");
-        if (book.getStock() < 0) throw new BadRequestException("El stock no puede ser negativo"); // Validación restaurada para fase Green
+        if (book == null) {
+            throw new BadRequestException("El libro no puede ser nulo");
+        }
+        if (book.getTitle() == null || book.getTitle().trim().isEmpty()) {
+            throw new BadRequestException("El título del libro es obligatorio");
+        }
+        if (book.getAuthor() == null || book.getAuthor().trim().isEmpty()) {
+            throw new BadRequestException("El autor del libro es obligatorio");
+        }
+        if (book.getPrice() <= 0) {
+            throw new BadRequestException(String.format("El precio debe ser mayor que 0, valor recibido: %.2f", book.getPrice()));
+        }
+        if (book.getStock() < 0) {
+            throw new BadRequestException(String.format("El stock no puede ser negativo, valor recibido: %d", book.getStock()));
+        }
     }
 
     public List<Book> getAllBooks() {
