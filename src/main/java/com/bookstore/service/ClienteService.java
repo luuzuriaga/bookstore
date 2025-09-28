@@ -20,7 +20,7 @@ public class ClienteService {
             throw new BadRequestException("El email es obligatorio");
         }
         if (clienteRepository.findByEmail(cliente.getEmail()).isPresent()) {
-            throw new BadRequestException("Ya existe un cliente con ese email");
+            throw new BadRequestException(" Ya existe un cliente con ese email ");
         }
         return clienteRepository.save(cliente);
     }
