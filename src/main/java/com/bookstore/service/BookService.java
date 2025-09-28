@@ -23,7 +23,7 @@ public class BookService {
 
     private void validateBook(Book book) {
         if (book.getPrice() <= 0) throw new BadRequestException("El precio debe ser mayor que 0");
-        if (book.getStock() < 0) throw new BadRequestException("El stock no puede ser negativo");
+        if (book.getStock() < 0) throw new BadRequestException("El stock no puede ser negativo"); // Validación restaurada para fase Green
     }
 
     public List<Book> getAllBooks() {
