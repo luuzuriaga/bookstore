@@ -8,6 +8,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Servicio para la gestión de clientes.
+ * TODO: mejorar logs en el futuro
+ */
+
 @Service
 public class ClienteService {
     private final ClienteRepository clienteRepository;
@@ -17,10 +22,10 @@ public class ClienteService {
     // regla: email único antes de guardar
     public Cliente saveCliente(Cliente cliente) {
         if (cliente.getEmail() == null || cliente.getEmail().trim().isEmpty()) {
-            throw new BadRequestException("El email es obligatorio");
+            throw new BadRequestException(" El email es obligatorio ");
         }
         if (clienteRepository.findByEmail(cliente.getEmail()).isPresent()) {
-            throw new BadRequestException("Ya existe un cliente con ese email");
+            throw new BadRequestException(" Ya existe un cliente con ese email ");
         }
         return clienteRepository.save(cliente);
     }
@@ -32,4 +37,7 @@ public class ClienteService {
     }
 
     public void deleteById(Long id) { clienteRepository.deleteById(id); }
+
+    public long countClientes() {
+        return clienteRepository.count();
 }
