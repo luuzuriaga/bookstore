@@ -12,8 +12,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -57,10 +58,11 @@ class ClienteControllerTest {
 
     @Test
     void createCliente_ReturnsCreated() throws Exception {
-        Cliente cliente = new Cliente("Juan", "juan@mail.com");
-        cliente.setId(5L);
+        Cliente savedCliente = new Cliente("Juan", "juan@mail.com");
+        savedCliente.setId(5L);
 
-        when(clienteService.saveCliente(cliente)).thenReturn(cliente);
+        // ✅ usamos ArgumentMatchers.any() para que el mock responda sin importar el objeto recibido
+        when(clienteService.saveCliente(any(Cliente.class))).thenReturn(savedCliente);
 
         String requestBody = """
                 {
@@ -84,6 +86,7 @@ class ClienteControllerTest {
                 .when(clienteService).getById(999L);
 
         mockMvc.perform(get("/api/clientes/999"))
-                .andExpect(status().is4xxClientError());
+                // ✅ más claro: esperamos 404 Not Found
+                .andExpect(status().isNotFound());
     }
 }
