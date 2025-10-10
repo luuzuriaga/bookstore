@@ -40,4 +40,5 @@ public class ClienteService {
 
     public long countClientes() {
         return clienteRepository.count();
+    }
 }
